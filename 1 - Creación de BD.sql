@@ -108,7 +108,6 @@ CREATE TABLE comprobante (
     fecha_comprobante          DATE default current_date,
     hora_comprobante           TIME default current_time,
     monto_total                numeric(10,2),
-    cliente_id                 INTEGER NOT NULL,
     empleado_dni_empleado      VARCHAR(8) NOT NULL, 
     cliente_cliente_id         INTEGER NOT NULL,
     FOREIGN KEY (transaccion_transaccion_id) REFERENCES transaccion (transaccion_id),
