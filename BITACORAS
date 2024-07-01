@@ -71,15 +71,15 @@ $$ language 'plpgsql';
 Create or replace trigger tr_fn_bitacora_detalle_servicio after delete OR insert OR update on detalle_servicios
 	for each row execute procedure fn_bitacora_detalle_servicio();
 
-select * from transaccion
+select * from transaccion;
 
-select* from habitacion
-select * from categoria_habitacion
-select * from servicio
+select* from habitacion;
+select * from categoria_habitacion;
+select * from servicio;
 
 INSERT INTO detalle_servicios(descripcion_solicitud, monto_servicio, 
-			transaccion_transaccion_id, servicio_servicio_id) values ('Por los días que se quedó', 225, 2, 1)
-select * from bitacora_detalle_servicios
+			transaccion_transaccion_id, servicio_servicio_id) values ('Por los días que se quedó', 225, 2, 1);
+select * from bitacora_detalle_servicios;
 
 
 ------------------------------------BITACORA_COMPROBANTE------------------------------------
@@ -112,10 +112,10 @@ begin
 	--inet_server_addr()
 	if tg_op='INSERT' THEN
 		INSERT INTO BITACORA_COMPROBANTE(comprobante_id, transaccion_transaccion_id, tipo_comprobante, numero_comprobante, 
-						fecha_comprobante, hora_comprobante, monto_total, cliente_id, empleado_dni_empleado, cliente_cliente_id,
+						fecha_comprobante, hora_comprobante, monto_total, empleado_dni_empleado, cliente_cliente_id,
 											  f_actualizacion, h_actualizacion, usuario, maquina_ip, operacion)
 		VALUES (new.comprobante_id, new.transaccion_transaccion_id, new.tipo_comprobante, new.numero_comprobante, 
-		new.fecha_comprobante, new.hora_comprobante, new.monto_total, new.cliente_id, new.empleado_dni_empleado, new.cliente_cliente_id,
+		new.fecha_comprobante, new.hora_comprobante, new.monto_total, new.empleado_dni_empleado, new.cliente_cliente_id,
 		current_date, current_time, current_user, inet_client_addr(), 'IN');
 			
 		return new;
@@ -123,10 +123,10 @@ begin
 	
 	if tg_op='DELETE' THEN
 		INSERT INTO BITACORA_COMPROBANTE(comprobante_id, transaccion_transaccion_id, tipo_comprobante, numero_comprobante, 
-						fecha_comprobante, hora_comprobante, monto_total, cliente_id, empleado_dni_empleado, cliente_cliente_id,
+						fecha_comprobante, hora_comprobante, monto_total, empleado_dni_empleado, cliente_cliente_id,
 											  f_actualizacion, h_actualizacion, usuario, maquina_ip, operacion)
 		VALUES (old.comprobante_id, old.transaccion_transaccion_id, old.tipo_comprobante, old.numero_comprobante, 
-		old.fecha_comprobante, old.hora_comprobante, old.monto_total, old.cliente_id, old.empleado_dni_empleado, old.cliente_cliente_id,
+		old.fecha_comprobante, old.hora_comprobante, old.monto_total, old.empleado_dni_empleado, old.cliente_cliente_id,
 		current_date, current_time, current_user, inet_client_addr(), 'DE');
 				
 		return old;
@@ -136,19 +136,19 @@ begin
 	if tg_op='UPDATE' THEN
 	
 		INSERT INTO BITACORA_COMPROBANTE(comprobante_id, transaccion_transaccion_id, tipo_comprobante, numero_comprobante, 
-						fecha_comprobante, hora_comprobante, monto_total, cliente_id, empleado_dni_empleado, cliente_cliente_id,
+						fecha_comprobante, hora_comprobante, monto_total, empleado_dni_empleado, cliente_cliente_id,
 											  f_actualizacion, h_actualizacion, usuario, maquina_ip, operacion)
 		VALUES (new.comprobante_id, new.transaccion_transaccion_id, new.tipo_comprobante, new.numero_comprobante, 
-		new.fecha_comprobante, new.hora_comprobante, new.monto_total, new.cliente_id, new.empleado_dni_empleado, new.cliente_cliente_id,
+		new.fecha_comprobante, new.hora_comprobante, new.monto_total, new.empleado_dni_empleado, new.cliente_cliente_id,
 				current_date, current_time, current_user, inet_client_addr(), 'UA');
 			
 		return new;
 	
 		INSERT INTO BITACORA_COMPROBANTE(comprobante_id, transaccion_transaccion_id, tipo_comprobante, numero_comprobante, 
-						fecha_comprobante, hora_comprobante, monto_total, cliente_id, empleado_dni_empleado, cliente_cliente_id,
+						fecha_comprobante, hora_comprobante, monto_total, empleado_dni_empleado, cliente_cliente_id,
 											  f_actualizacion, h_actualizacion, usuario, maquina_ip, operacion)
 		VALUES (old.comprobante_id, old.transaccion_transaccion_id, old.tipo_comprobante, old.numero_comprobante, 
-		old.fecha_comprobante, old.hora_comprobante, old.monto_total, old.cliente_id, old.empleado_dni_empleado, old.cliente_cliente_id,
+		old.fecha_comprobante, old.hora_comprobante, old.monto_total, old.empleado_dni_empleado, old.cliente_cliente_id,
 		current_date, current_time, current_user, inet_client_addr(), 'UD');
 				
 		return old;
@@ -168,8 +168,8 @@ select * from comprobante;
 select * from cliente;
 
 INSERT INTO comprobante(transaccion_transaccion_id, tipo_comprobante, numero_comprobante, 
-							  monto_total, cliente_id, empleado_dni_empleado, cliente_cliente_id) 
-							  values (2, 'BE', 00000003, 500, 1, 12345678, 1);
+							  monto_total, empleado_dni_empleado, cliente_cliente_id) 
+							  values (2, 'BE', 00000003, 500, 12345678, 1);
 select * from bitacora_comprobante;
 
 
@@ -310,9 +310,9 @@ select * from servicio;
 select * from comprobante;
 select * from cliente;
 
-INSERT INTO transaccion(tipo_transaccion, habitacion_habitacion_id, persona_id, fecha_entrada, hora_entrada, empleado_dni_empleado, 
+INSERT INTO transaccion(tipo_transaccion, habitacion_habitacion_id, persona_id, empleado_dni_empleado, 
 							   cliente_cliente_id, motivo_viaje_motivo_id)
-	VALUES (1, 2, 4, '12345678', 2, 3);
+	VALUES (1, 2, 2, '12345678', 2, 3);
 select * from bitacora_transaccion;
 
 ------------------------------------BITACORA_DETALLE_ALOJAMIENTO------------------------------------
