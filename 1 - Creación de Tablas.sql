@@ -1,6 +1,6 @@
 CREATE TABLE pais (
     codigo_pais CHAR(3) PRIMARY KEY,
-    nombre      VARCHAR(100) not null
+    nombre      VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE categoria_habitacion (
@@ -11,13 +11,13 @@ CREATE TABLE categoria_habitacion (
 
 CREATE TABLE tipo_empresa (
     tipo_id     SERIAL PRIMARY KEY,
-    nombre_tipo VARCHAR(100) not null
+    nombre_tipo VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE habitacion (
     habitacion_id                     SERIAL PRIMARY KEY,
-    estado_habitacion                 CHAR(1),
-    descripcion                       varchar(100),
+    estado_habitacion                 CHAR(1) NOT NULL,
+    descripcion                       varchar(100) NOT NULL,
     categoria_habitacion_categoria_id INTEGER NOT NULL,
     FOREIGN KEY (categoria_habitacion_categoria_id) REFERENCES categoria_habitacion (categoria_id)
 );
@@ -31,7 +31,7 @@ CREATE TABLE cliente (
     direccion        VARCHAR(255),
     telefono         varchar(14), ---Loss numeros de teléfono están entre 8 y 11, agregándole el +(..)
     f_registro       DATE default current_date,
-    tipo_doc         VARCHAR(20) not null,
+    tipo_doc         VARCHAR(20) NOT NULL,
     numero_documento VARCHAR(20) unique,
     pais_codigo_pais CHAR(3) NOT NULL,
     FOREIGN KEY (pais_codigo_pais) REFERENCES pais (codigo_pais)
@@ -39,18 +39,18 @@ CREATE TABLE cliente (
 
 CREATE TABLE empleado (
     dni_empleado char(8) PRIMARY KEY,
-    apellido_pat VARCHAR(100) not null,
-    ape_materno  VARCHAR(100) not null,
-    nombres      VARCHAR(100) not null,
-    sexo         CHAR(1) not null,
-    movil        char(12) not null,
+    apellido_pat VARCHAR(100) NOT NULL,
+    ape_materno  VARCHAR(100) NOT NULL,
+    nombres      VARCHAR(100) NOT NULL,
+    sexo         CHAR(1) NOT NULL,
+    movil        char(12) NOT NULL,
     f_alta       DATE default current_date,
     f_baja       DATE
 );
 
 CREATE TABLE motivo_viaje (
     motivo_id          SERIAL PRIMARY KEY,
-    descripcion_motivo VARCHAR(255)
+    descripcion_motivo VARCHAR(255) not null
 );
 
 CREATE TABLE persona (
@@ -64,7 +64,7 @@ CREATE TABLE persona (
 
 CREATE TABLE servicio (
     servicio_id          SERIAL PRIMARY KEY,
-    descricpion_servicio varchar(150)
+    descricpion_servicio varchar(150) NOT NULL
 );
 
 COMMENT ON COLUMN servicio.servicio_id IS '1 Alojamiento 2 Restaurante 3 Cochera 4 Transporte';
