@@ -94,7 +94,6 @@ CREATE TABLE BITACORA_COMPROBANTE
     fecha_comprobante          DATE,
     hora_comprobante           TIME,
     monto_total                numeric(10,2),
-    cliente_id                 INTEGER NOT NULL,
     empleado_dni_empleado      VARCHAR(8) NOT NULL, 
     cliente_cliente_id         INTEGER NOT NULL, --para borrar
 -----------------------------------
