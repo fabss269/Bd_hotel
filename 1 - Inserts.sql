@@ -112,3 +112,87 @@ INSERT INTO detalle_comprobante (servicio_servicio_id, comprobante_comprobante_i
 INSERT INTO detalle_servicios (fecha_solicitud, hora_solicitud, descripcion_solicitud, monto_servicio, transaccion_transaccion_id, servicio_servicio_id) VALUES
 ('2023-06-02', '09:00', 'Desayuno', 20.00, 1, 3),
 ('2023-06-09', '18:00', 'Cena', 25.00, 1, 4);
+
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+
+INSERT INTO pais (codigo_pais, nombre) VALUES
+('124', 'Canadá'),
+('250', 'Francia'),
+('356', 'India'),
+('392', 'Japón'),
+('528', 'Países Bajos');
+
+INSERT INTO categoria_habitacion (nombre_categoria, precio_categoria) VALUES
+('Suite Presidencial', 300.00),
+('Junior Suite', 200.00);
+
+INSERT INTO tipo_empresa (nombre_tipo) VALUES
+('Educación'),
+('Salud');
+
+INSERT INTO servicio (descricpion_servicio) VALUES
+('Spa'),
+('Gimnasio');
+
+INSERT INTO motivo_viaje (descripcion_motivo) VALUES
+('Estudios'),
+('Salud');
+
+INSERT INTO empleado (dni_empleado, apellido_pat, ape_materno, nombres, sexo, movil) VALUES
+('56789012', 'García', 'Fernández', 'Carlos', 'M', '+51987654321'),
+('87651234', 'Martín', 'Rodríguez', 'Luisa', 'F', '+51923456789');
+
+INSERT INTO cliente (direccion, telefono, tipo_doc, numero_documento, pais_codigo_pais) VALUES
+('789 Boulevard Principal', '+51888888888', 'DNI', '56789012C', '124'),
+('101 Avenida del Sol', '+51777777777', 'Pasaporte', 'B1234567', '250');
+
+INSERT INTO persona (cliente_id, ape_paterno, ape_materno, nombres, sexo) VALUES
+(4, 'Smith', 'Brown', 'John', 'M'),
+(5, 'Johnson', 'White', 'Emily', 'F');
+
+INSERT INTO empresa (cliente_id, razon_social, tipo_empresa_tipo_id) VALUES
+(5, 'Educational Institute', 4),
+(6, 'Healthcare Services', 5);
+
+INSERT INTO habitacion (estado_habitacion, descripcion, categoria_habitacion_categoria_id) VALUES
+('R', 'Habitación reservada con balcón', 2),
+('D', 'Habitación con cama king size', 2);
+
+INSERT INTO transaccion (tipo_transaccion, habitacion_habitacion_id, persona_id, fecha_entrada, hora_entrada, fecha_salida, hora_salida, empleado_dni_empleado, cliente_cliente_id, motivo_viaje_motivo_id) VALUES
+('1', 3, 4, '2023-07-01', '13:00', '2023-07-05', '11:00', '56789012', 3, 1),
+('2', 4, 5, '2023-07-06', '14:00', '2023-07-08', '10:00', '87651234', 4, 2);
+
+INSERT INTO comprobante (transaccion_transaccion_id, tipo_comprobante, numero_comprobante, monto_total, empleado_dni_empleado, cliente_cliente_id) VALUES
+(3, 'B', '00000003', 400.00, '56789012', 3),
+(4, 'F', '00000004', 250.00, '87651234', 4);
+
+INSERT INTO detalle_alojamiento (transaccion_transaccion_id, persona_cliente_id) VALUES
+(3, 4),
+(4, 5);
+
+INSERT INTO detalle_comprobante (servicio_servicio_id, comprobante_comprobante_id, monto) VALUES
+(5, 3, 100.00),
+(6, 4, 150.00);
+
+INSERT INTO detalle_servicios (fecha_solicitud, hora_solicitud, descripcion_solicitud, monto_servicio, transaccion_transaccion_id, servicio_servicio_id) VALUES
+('2023-07-02', '10:00', 'Masaje', 50.00, 3, 5),
+('2023-07-07', '17:00', 'Cena Gourmet', 75.00, 4, 6);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
