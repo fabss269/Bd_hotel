@@ -1,234 +1,633 @@
 
--- PAIS
-create or replace function 	pa_insert_pais(
-		p_codigo_pais char(3),
-		p_nombre varchar(100)
-	) 	
-returns char(3) 
-as $$
+-- TIPO_EMPRESA
+create or replace function pa_insert_tipo_empresa(
+	nom_tipo varchar(100)
+	) 
+returns int as $$
 declare
-    retorno char(3);
+    retorno int;
 begin
-    insert into pais (codigo_pais, nombre) 
-		values (p_codigo_pais, p_nombre)
-    returning codigo_pais into retorno;
-    return retorno;
-exception when others then
-    return null;
-end;
-$$ language 'plpgsql';
-
-create or replace function pa_update_pais (
-    codigo_pais char(3), 
-    nombre varchar
-    )
-returns boolean 
-as $$
-begin
-    update pais
-    set nombre = nombre
-    where codigo_pais = codigo_pais;
-    return true;
-exception when others then
-    return false;
-end;
-$$ language 'plpgsql';
-
-create or replace function pa_delete_pais(codigo_pais char(3))
-returns boolean as $$
-begin
-    delete from pais
-    where codigo_pais = codigo_pais;
-    return true;
-exception when others then
-    return false;
-end;
-$$ language 'plpgsql';
-
--- motivo_viaje
-
-create or replace function pa_insert_motivo_viaje (
-    descripcion_motivo varchar
-    )
-returns integer 
-    as $$
-declare
-    retorno integer;
-begin
-    insert into motivo_viaje (descripcion_motivo) 
-    values (descripcion_motivo)
-    returning motivo_id into retorno;
-    return retorno;
-exception
-    when others then
-        return -1;
-end;
-$$ language 'plpgsql';
-
-create or replace function pa_update_motivo_viaje(motivo_id integer, descripcion_motivo varchar)
-returns boolean as $$
-begin
-    update motivo_viaje
-    set descripcion_motivo = descripcion_motivo
-    where motivo_id = motivo_id;
-    return true;
-exception
-    when others then
-        return false;
-end;
-$$ language 'plpgsql';
-
-create or replace function pa_delete_motivo_viaje(motivo_id integer)
-returns boolean as $$
-begin
-    delete from motivo_viaje
-    where motivo_id = motivo_id;
-    return true;
-exception
-    when others then
-        return false;
-end;
-$$ language 'plpgsql';
-
--- categoria_habitacion
-
-create or replace function pa_insert_categoria_habitacion(
-    nombre_categoria varchar, 
-    precio_categoria numeric
-    )
-returns integer 
-as $$
-declare
-    retorno integer;
-begin
-    insert into categoria_habitacion (nombre_categoria, precio_categoria) 
-    values (nombre_categoria, precio_categoria)
-    returning categoria_id into retorno;
-    return retorno;
-exception
-    when others then
-        return -1;
-end;
-$$ language 'plpgsql';
-
-create or replace function pa_update_categoria_habitacion(categoria_id integer, nombre_categoria varchar, precio_categoria numeric)
-returns boolean as $$
-begin
-    update categoria_habitacion
-    set nombre_categoria = nombre_categoria,
-        precio_categoria = precio_categoria
-    where categoria_id = categoria_id;
-    return true;
-exception
-    when others then
-        return false;
-end;
-$$ language 'plpgsql';
-
-create or replace function pa_delete_categoria_habitacion(categoria_id integer)
-returns boolean as $$
-begin
-    delete from categoria_habitacion
-    where categoria_id = categoria_id;
-    return true;
-exception
-    when others then
-        return false;
-end;
-$$ language 'plpgsql';
-
--- tipo_empresa
-
-create or replace function pa_insert_tipo_empresa(nombre_tipo varchar)
-returns integer as $$
-declare
-    retorno integer;
-begin
-    insert into tipo_empresa (nombre_tipo) 
-    values (nombre_tipo)
+    insert into tipo_empresa (nombre_tipo)
+    values (nom_tipo)
     returning tipo_id into retorno;
-    return retorno;
-exception
-    when others then
-        return -1;
-end;
-$$ language 'plpgsql';
 
-create or replace function pa_update_tipo_empresa(tipo_id integer, nombre_tipo varchar)
-returns boolean as $$
+    return retorno;
+exception when others then
+    return -1;
+end;
+$$ 
+language plpgsql;
+
+--
+create or replace function pa_update_tipo_empresa(
+	tipo_id int,
+	nom_tipo varchar(100)
+	) 
+returns int as $$
 begin
     update tipo_empresa
-    set nombre_tipo = nombre_tipo
+    set nombre_tipo = nom_tipo
     where tipo_id = tipo_id;
-    return true;
-exception
-    when others then
-        return false;
+    return tipo_id;
+exception when others then
+    return -1;
 end;
-$$ language 'plpgsql';
+$$ 
+language plpgsql;
 
-create or replace function pa_delete_tipo_empresa(tipo_id integer)
-returns boolean as $$
+--
+create or replace function pa_delete_tipo_empresa(
+	tipo int
+	) 
+returns int as $$
 begin
     delete from tipo_empresa
-    where tipo_id = tipo_id;
-    return true;
-exception
-    when others then
-        return false;
+    where tipo_id = tipo;
+    return tipo_id;
+exception when others then
+    return -1;
 end;
-$$ language 'plpgsql';
+$$ 
+language plpgsql;
 
--- habitacion
 
-create or replace function pa_insert_habitacion(estado_habitacion char(1), descripcion varchar, categoria_habitacion_categoria_id integer)
-returns integer as $$
+
+-- PAIS
+CREATE OR REPLACE FUNCTION pa_insert_pais(
+	cod_pais CHAR(3),
+	nom VARCHAR(100)
+	) 
+RETURNS CHAR(3) AS $$
+DECLARE
+    retorno CHAR(3);
+BEGIN
+    INSERT INTO pais (codigo_pais, nombre)
+    VALUES (cod_pais, nom)
+    RETURNING codigo_pais INTO retorno;
+    RETURN retorno;
+EXCEPTION WHEN OTHERS THEN
+    RETURN null;
+END;
+$$ 
+LANGUAGE plpgsql;
+
+--
+CREATE OR REPLACE FUNCTION pa_update_pais(
+    cod_pais CHAR(3), 
+    nom VARCHAR(100)
+    ) 
+RETURNS CHAR(3) AS $$
+BEGIN
+    UPDATE pais
+    SET nombre = nom
+    WHERE codigo_pais = cod_pais;
+    RETURN cod_pais;
+EXCEPTION WHEN OTHERS THEN
+    RETURN null;
+END;
+$$ 
+LANGUAGE plpgsql;
+
+--
+CREATE OR REPLACE FUNCTION pa_delete_pais(cod_pais CHAR(3)) RETURNS CHAR(3) AS $$
+BEGIN
+    DELETE FROM pais
+    WHERE codigo_pais = cod_pais;
+    RETURN cod_pais;
+EXCEPTION WHEN OTHERS THEN
+    RETURN null;
+END;
+$$ 
+LANGUAGE plpgsql;
+
+
+
+-- CLIENTE
+create or replace function pa_insert_cliente_empresa (
+    dir varchar(255),
+    tel varchar(14),
+    doc varchar (20),
+    n_doc varchar(20),
+    pais char(3),
+    raz_soc varchar(255),
+    tipo int
+    )
+returns int as $$
 declare
-    retorno integer;
+    retorno int;
 begin
-    insert into habitacion (estado_habitacion, descripcion, categoria_habitacion_categoria_id) 
-    values (estado_habitacion, descripcion, categoria_habitacion_categoria_id)
-    returning habitacion_id into retorno;
+    INSERT INTO public.cliente (direccion, telefono, tipo_doc, numero_documento, pais_codigo_pais)
+	VALUES (dir, tel,doc, n_doc, pais)
+    returning cliente_id into retorno;
+
+    INSERT INTO public.empresa(cliente_id, razon_social, tipo_empresa_tipo_id)
+	VALUES (retorno, raz_soc, tipo);
+
     return retorno;
-exception
-    when others then
-        return -1;
+exception when others then
+    return -1;
 end;
-$$ language 'plpgsql';
+$$ 
+language 'plpgsql';
 
-create or replace function pa_update_habitacion(habitacion_id integer, estado_habitacion char(1), descripcion varchar, categoria_habitacion_categoria_id integer)
-returns boolean as $$
+--
+create or replace function pa_insert_cliente_persona (
+    dir varchar(255),
+    tel varchar(14),
+    doc varchar (20),
+    n_doc varchar(20),
+    pais char(3),    
+    apet varchar(100),
+    apem varchar(100),
+    nom varchar(100),
+    sexo char(1)
+    )
+returns int as $$
+declare
+    retorno int;
 begin
-    update habitacion
-    set estado_habitacion = estado_habitacion,
-        descripcion = descripcion,
-        categoria_habitacion_categoria_id = categoria_habitacion_categoria_id
-    where habitacion_id = habitacion_id;
-    return true;
-exception
-    when others then
-        return false;
-end;
-$$ language 'plpgsql';
+    INSERT INTO public.cliente (direccion, telefono, tipo_doc, numero_documento, pais_codigo_pais)
+	VALUES (dir, tel,doc, n_doc, pais)
+    returning cliente_id into retorno;
+    
+    INSERT INTO public.persona(cliente_id, ape_paterno, ape_materno, nombres, sexo)
+	VALUES (retorno, apet, apem,nom, sexo);
 
-create or replace function pa_delete_habitacion(habitacion_id integer)
-returns boolean as $$
+    return retorno;
+exception when others then
+    return -1;
+end;
+$$ 
+language 'plpgsql';
+
+--
+CREATE OR REPLACE FUNCTION pa_update_cliente_empresa (
+    cliente_id int,
+    dir varchar(255),
+    tel varchar(14),
+    doc varchar (20),
+    n_doc varchar(20),
+    pais char(3),
+    raz_soc varchar(255),
+    tipo int
+)
+RETURNS BOOLEAN AS $$
+BEGIN
+    UPDATE public.cliente
+    SET direccion = dir, 
+        telefono = tel, 
+        tipo_doc = doc, 
+        numero_documento = n_doc, 
+        pais_codigo_pais = pais
+    WHERE cliente_id = cliente_id;
+
+    UPDATE public.empresa
+    SET razon_social = raz_soc, 
+        tipo_empresa_tipo_id = tipo
+    WHERE cliente_id = cliente_id;
+
+    RETURN TRUE;
+EXCEPTION
+    WHEN OTHERS THEN
+        RETURN FALSE;
+END;
+$$ 
+LANGUAGE 'plpgsql';
+
+--
+CREATE OR REPLACE FUNCTION pa_update_cliente_persona (
+    cliente_id int,
+    dir varchar(255),
+    tel varchar(14),
+    doc varchar (20),
+    n_doc varchar(20),
+    pais char(3),    
+    apet varchar(100),
+    apem varchar(100),
+    nom varchar(100),
+    sexo char(1)
+)
+RETURNS BOOLEAN AS $$
+BEGIN
+    UPDATE public.cliente
+    SET direccion = dir, 
+        telefono = tel, 
+        tipo_doc = doc, 
+        numero_documento = n_doc, 
+        pais_codigo_pais = pais
+    WHERE cliente_id = cliente_id;
+
+    UPDATE public.persona
+    SET ape_paterno = apet, 
+        ape_materno = apem, 
+        nombres = nom, 
+        sexo = sexo
+    WHERE cliente_id = cliente_id;
+
+    RETURN TRUE;
+EXCEPTION
+    WHEN OTHERS THEN
+        RETURN FALSE;
+END;
+$$ 
+LANGUAGE 'plpgsql';
+
+--
+CREATE OR REPLACE FUNCTION pa_delete_cliente (
+    cliente_id int
+)
+RETURNS BOOLEAN AS $$
+BEGIN
+    -- Eliminar de empresa si existe
+    DELETE FROM public.empresa WHERE cliente_id = cliente_id;
+
+    -- Eliminar de persona si existe
+    DELETE FROM public.persona WHERE cliente_id = cliente_id;
+
+    -- Eliminar de cliente
+    DELETE FROM public.cliente WHERE cliente_id = cliente_id;
+
+    RETURN TRUE;
+EXCEPTION
+    WHEN OTHERS THEN
+        RETURN FALSE;
+END;
+$$ 
+LANGUAGE 'plpgsql';
+
+
+
+
+
+-- CATEGORIA_HABITACION
+CREATE OR REPLACE FUNCTION pa_insert_categoria_habitacion(nom_cat VARCHAR(100), precio NUMERIC(10,2)) RETURNS int AS $$
+DECLARE
+    retorno int;
+BEGIN
+    INSERT INTO categoria_habitacion (nombre_categoria, precio_categoria)
+    VALUES (nom_cat, precio)
+    RETURNING categoria_id INTO retorno;
+    RETURN retorno;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+--
+CREATE OR REPLACE FUNCTION pa_update_categoria_habitacion(cat_id int, nom_cat VARCHAR(100), precio NUMERIC(10,2)) RETURNS int AS $$
+BEGIN
+    UPDATE categoria_habitacion
+    SET nombre_categoria = nom_cat, precio_categoria = precio
+    WHERE categoria_id = cat_id;
+    RETURN cat_id;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+--
+CREATE OR REPLACE FUNCTION pa_delete_categoria_habitacion(cat_id int) RETURNS int AS $$
+BEGIN
+    DELETE FROM categoria_habitacion
+    WHERE categoria_id = cat_id;
+    RETURN cat_id;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+
+-- HABITACION
+CREATE OR REPLACE FUNCTION pa_insert_habitacion(est_hab CHAR(1), descrip VARCHAR(100), cat_id int) RETURNS int AS $$
+DECLARE
+    retorno int;
+BEGIN
+    INSERT INTO habitacion (estado_habitacion, descripcion, categoria_habitacion_categoria_id)
+    VALUES (est_hab, descrip, cat_id)
+    RETURNING habitacion_id INTO retorno;
+    RETURN retorno;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+--
+CREATE OR REPLACE FUNCTION pa_update_habitacion(hab_id int, est_hab CHAR(1), desc VARCHAR(100), cat_id int) RETURNS int AS $$
+BEGIN
+    UPDATE habitacion
+    SET estado_habitacion = est_hab, descripcion = desc, categoria_habitacion_categoria_id = cat_id
+    WHERE habitacion_id = hab_id;
+    RETURN hab_id;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+--
+CREATE OR REPLACE FUNCTION pa_delete_habitacion(hab_id int) RETURNS int AS $$
+BEGIN
+    DELETE FROM habitacion
+    WHERE habitacion_id = hab_id;
+    RETURN hab_id;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+-- EMPLEADO
+CREATE OR REPLACE FUNCTION pa_insert_empleado(dni CHAR(8), ape_pat VARCHAR(100), ape_mat VARCHAR(100), nom VARCHAR(100), sex CHAR(1), mov CHAR(12)) RETURNS CHAR(8) AS $$
+DECLARE
+    retorno CHAR(8);
+BEGIN
+    INSERT INTO empleado (dni_empleado, apellido_pat, ape_materno, nombres, sexo, movil)
+    VALUES (dni, ape_pat, ape_mat, nom, sex, mov)
+    RETURNING dni_empleado INTO retorno;
+    RETURN retorno;
+EXCEPTION WHEN OTHERS THEN
+    RETURN 'ERR';
+END;
+$$ LANGUAGE plpgsql;
+--
+CREATE OR REPLACE FUNCTION pa_update_empleado(dni CHAR(8), ape_pat VARCHAR(100), ape_mat VARCHAR(100), nom VARCHAR(100), sex CHAR(1), mov CHAR(12)) RETURNS CHAR(8) AS $$
+BEGIN
+    UPDATE empleado
+    SET apellido_pat = ape_pat, ape_materno = ape_mat, nombres = nom, sexo = sex, movil = mov
+    WHERE dni_empleado = dni;
+    RETURN dni;
+EXCEPTION WHEN OTHERS THEN
+    RETURN 'ERR';
+END;
+$$ LANGUAGE plpgsql;
+--
+CREATE OR REPLACE FUNCTION pa_delete_empleado(dni CHAR(8)) RETURNS CHAR(8) AS $$
+BEGIN
+    DELETE FROM empleado
+    WHERE dni_empleado = dni;
+    RETURN dni;
+EXCEPTION WHEN OTHERS THEN
+    RETURN 'ERR';
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+-- MOTIVO_VIAJE
+CREATE OR REPLACE FUNCTION pa_insert_motivo_viaje(desc_motivo VARCHAR(255)) RETURNS int AS $$
+DECLARE
+    retorno int;
+BEGIN
+    INSERT INTO motivo_viaje (descripcion_motivo)
+    VALUES (desc_motivo)
+    RETURNING motivo_id INTO retorno;
+    RETURN retorno;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+--
+CREATE OR REPLACE FUNCTION pa_update_motivo_viaje(mot_id int, desc_motivo VARCHAR(255)) RETURNS int AS $$
+BEGIN
+    UPDATE motivo_viaje
+    SET descripcion_motivo = desc_motivo
+    WHERE motivo_id = mot_id;
+    RETURN mot_id;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+--
+CREATE OR REPLACE FUNCTION pa_delete_motivo_viaje(mot_id int) RETURNS int AS $$
+BEGIN
+    DELETE FROM motivo_viaje
+    WHERE motivo_id = mot_id;
+    RETURN mot_id;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+-- SERVICIO
+CREATE OR REPLACE FUNCTION pa_insert_servicio(desc_servicio VARCHAR(255)) RETURNS int AS $$
+DECLARE
+    retorno int;
+BEGIN
+    INSERT INTO servicio (descricpion_servicio)
+    VALUES (desc_servicio)
+    RETURNING servicio_id INTO retorno;
+    RETURN retorno;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+--
+CREATE OR REPLACE FUNCTION pa_update_servicio(serv_id int, desc_servicio VARCHAR(255)) RETURNS int AS $$
+BEGIN
+    UPDATE servicio
+    SET descricpion_servicio = desc_servicio
+    WHERE servicio_id = serv_id;
+    RETURN serv_id;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+--
+CREATE OR REPLACE FUNCTION pa_delete_servicio(serv_id int) RETURNS int AS $$
+BEGIN
+    DELETE FROM servicio
+    WHERE servicio_id = serv_id;
+    RETURN serv_id;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+-- TRANSACCION
+CREATE OR REPLACE FUNCTION pa_insert_transaccion(tipo_trans CHAR(1), hab_id int, per_id int, fecha_ent DATE, hora_ent TIME, fecha_sal DATE, hora_sal TIME, dni_emp CHAR(8), cli_id int, mot_id int) RETURNS int AS $$
+DECLARE
+    retorno int;
+BEGIN
+    INSERT INTO transaccion (tipo_transaccion, habitacion_habitacion_id, persona_id, fecha_entrada, hora_entrada, fecha_salida, hora_salida, empleado_dni_empleado, cliente_cliente_id, motivo_viaje_motivo_id)
+    VALUES (tipo_trans, hab_id, per_id, fecha_ent, hora_ent, fecha_sal, hora_sal, dni_emp, cli_id, mot_id)
+    RETURNING transaccion_id INTO retorno;
+    RETURN retorno;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+--
+CREATE OR REPLACE FUNCTION pa_update_transaccion(trans_id int, tipo_trans CHAR(1), hab_id int, per_id int, fecha_ent DATE, hora_ent TIME, fecha_sal DATE, hora_sal TIME, dni_emp CHAR(8), cli_id int, mot_id int) RETURNS int AS $$
+BEGIN
+    UPDATE transaccion
+    SET tipo_transaccion = tipo_trans, habitacion_habitacion_id = hab_id, persona_id = per_id, fecha_entrada = fecha_ent, hora_entrada = hora_ent, fecha_salida = fecha_sal, hora_salida = hora_sal, empleado_dni_empleado = dni_emp, cliente_cliente_id = cli_id, motivo_viaje_motivo_id = mot_id
+    WHERE transaccion_id = trans_id;
+    RETURN trans_id;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+--
+CREATE OR REPLACE FUNCTION pa_delete_transaccion(trans_id int) RETURNS int AS $$
+BEGIN
+    DELETE FROM transaccion
+    WHERE transaccion_id = trans_id;
+    RETURN trans_id;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+-- COMPROBANTE
+CREATE OR REPLACE FUNCTION pa_insert_comprobante(trans_id int, tipo_comp CHAR(1), num_comp VARCHAR(10), monto NUMERIC(10,2), cli_id int, dni_emp CHAR(8), cli_cli_id int) RETURNS int AS $$
+DECLARE
+    retorno int;
+BEGIN
+    INSERT INTO comprobante (transaccion_transaccion_id, tipo_comprobante, numero_comprobante, monto_total, cliente_id, empleado_dni_empleado, cliente_cliente_id)
+    VALUES (trans_id, tipo_comp, num_comp, monto, cli_id, dni_emp, cli_cli_id)
+    RETURNING comprobante_id INTO retorno;
+    RETURN retorno;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+--
+CREATE OR REPLACE FUNCTION pa_update_comprobante(comp_id int, trans_id int, tipo_comp CHAR(1), num_comp VARCHAR(10), monto NUMERIC(10,2), cli_id int, dni_emp CHAR(8), cli_cli_id int) RETURNS int AS $$
+BEGIN
+    UPDATE comprobante
+    SET transaccion_transaccion_id = trans_id, tipo_comprobante = tipo_comp, numero_comprobante = num_comp, monto_total = monto, cliente_id = cli_id, empleado_dni_empleado = dni_emp, cliente_cliente_id = cli_cli_id
+    WHERE comprobante_id = comp_id;
+    RETURN comp_id;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+--
+CREATE OR REPLACE FUNCTION pa_delete_comprobante(comp_id int) RETURNS int AS $$
+BEGIN
+    DELETE FROM comprobante
+    WHERE comprobante_id = comp_id;
+    RETURN comp_id;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+-- DETALLE_ALOJAMIENTO
+CREATE OR REPLACE FUNCTION pa_insert_detalle_alojamiento(trans_id int, per_cli_id int) RETURNS int AS $$
+DECLARE
+    retorno int;
+BEGIN
+    INSERT INTO detalle_alojamiento (transaccion_transaccion_id, persona_cliente_id)
+    VALUES (trans_id, per_cli_id)
+    RETURNING detalle_alojamiento_id INTO retorno;
+    RETURN retorno;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+--
+CREATE OR REPLACE FUNCTION pa_update_detalle_alojamiento(det_alo_id int, trans_id int, per_cli_id int) RETURNS int AS $$
+BEGIN
+    UPDATE detalle_alojamiento
+    SET transaccion_transaccion_id = trans_id, persona_cliente_id = per_cli_id
+    WHERE detalle_alojamiento_id = det_alo_id;
+    RETURN det_alo_id;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+--
+CREATE OR REPLACE FUNCTION pa_delete_detalle_alojamiento(det_alo_id int) RETURNS int AS $$
+BEGIN
+    DELETE FROM detalle_alojamiento
+    WHERE detalle_alojamiento_id = det_alo_id;
+    RETURN det_alo_id;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+--DETALLE COMPROBANTE
+CREATE OR REPLACE FUNCTION pa_insert_detalle_comprobante(comp_id int, desc VARCHAR(255), cantidad int, precio_unit NUMERIC(10,2)) RETURNS int AS $$
+DECLARE
+    retorno int;
+BEGIN
+    INSERT INTO detalle_comprobante (comprobante_comprobante_id, descripcion, cantidad, precio_unitario)
+    VALUES (comp_id, desc, cantidad, precio_unit)
+    RETURNING detalle_comprobante_id INTO retorno;
+    RETURN retorno;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+--
+CREATE OR REPLACE FUNCTION pa_update_detalle_comprobante(det_comp_id int, comp_id int, desc VARCHAR(255), cantidad int, precio_unit NUMERIC(10,2)) RETURNS int AS $$
+BEGIN
+    UPDATE detalle_comprobante
+    SET comprobante_comprobante_id = comp_id, descripcion = desc, cantidad = cantidad, precio_unitario = precio_unit
+    WHERE detalle_comprobante_id = det_comp_id;
+    RETURN det_comp_id;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+--
+CREATE OR REPLACE FUNCTION pa_delete_detalle_comprobante(det_comp_id int) RETURNS int AS $$
+BEGIN
+    DELETE FROM detalle_comprobante
+    WHERE detalle_comprobante_id = det_comp_id;
+    RETURN det_comp_id;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+-- DETALLE_SERVICIOS
+create or replace function pa_insert_detalle_servicios(serv_id int, trans_id int, cantidad int, precio numeric(10,2)) returns int as $$
+declare
+    retorno int;
 begin
-    delete from habitacion
-    where habitacion_id = habitacion_id;
-    return true;
-exception
-    when others then
-        return false;
+    insert into detalle_servicios (servicio_servicio_id, transaccion_transaccion_id, cantidad, precio_total)
+    values (serv_id, trans_id, cantidad, precio)
+    returning detalle_servicios_id into retorno;
+    return retorno;
+exception when others then
+    return -1;
 end;
-$$ language 'plpgsql';
-
-
-
-
-
-
-
+$$ language plpgsql;
+--
+create or replace function pa_update_detalle_servicios(det_serv_id int, serv_id int, trans_id int, cantidad int, precio numeric(10,2)) returns int as $$
+begin
+    update detalle_servicios
+    set servicio_servicio_id = serv_id, transaccion_transaccion_id = trans_id, cantidad = cantidad, precio_total = precio
+    where detalle_servicios_id = det_serv_id;
+    return det_serv_id;
+exception when others then
+    return -1;
+end;
+$$ language plpgsql;
+--
+create or replace function pa_delete_detalle_servicios(det_serv_id int) returns int as $$
+begin
+    delete from detalle_servicios
+    where detalle_servicios_id = det_serv_id;
+    return det_serv_id;
+exception when others then
+    return -1;
+end;
+$$ language plpgsql;
 
 
 
