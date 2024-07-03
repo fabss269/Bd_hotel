@@ -85,9 +85,9 @@ INSERT INTO transaccion (tipo_transaccion, habitacion_habitacion_id, persona_id,
 ('2', 2, 4, '2023-06-08', '15:00', '2023-06-10', '11:00', '87654321', 2, 3);
 
 -- 12. Tabla comprobante
-INSERT INTO comprobante (transaccion_transaccion_id, tipo_comprobante, numero_comprobante, monto_total, cliente_id, empleado_dni_empleado, cliente_cliente_id) VALUES
-(1, 'B', '00000001', 350.00, 4, '12345678', 1),
-(2, 'F', '00000002', 150.00, 5, '12345678', 2);
+INSERT INTO comprobante (transaccion_transaccion_id, tipo_comprobante, numero_comprobante, monto_total, empleado_dni_empleado, cliente_cliente_id) VALUES
+(1, 'B', '00000001', 350.00, '12345678', 1),
+(2, 'F', '00000002', 150.00, '12345678', 2);
 
 -- 13. Tabla detalle_alojamiento
 INSERT INTO detalle_alojamiento (transaccion_transaccion_id, persona_cliente_id) VALUES
@@ -165,9 +165,9 @@ INSERT INTO transaccion (tipo_transaccion, habitacion_habitacion_id, persona_id,
 ('2', 4, 5, '2023-07-06', '14:00', '2023-07-08', '10:00', '87651234', 4, 2);
 
 -- 12. Tabla comprobante
-INSERT INTO comprobante (transaccion_transaccion_id, tipo_comprobante, numero_comprobante, monto_total, cliente_id, empleado_dni_empleado, cliente_cliente_id) VALUES
-(3, 'B', '00000003', 400.00, 3, '56789012', 3),
-(4, 'F', '00000004', 250.00, 4, '87651234', 4);
+INSERT INTO comprobante (transaccion_transaccion_id, tipo_comprobante, numero_comprobante, monto_total, empleado_dni_empleado, cliente_cliente_id) VALUES
+(3, 'B', '00000003', 400.00, '56789012', 3),
+(4, 'F', '00000004', 250.00, '87651234', 4);
 
 -- 13. Tabla detalle_alojamiento
 INSERT INTO detalle_alojamiento (transaccion_transaccion_id, persona_cliente_id) VALUES
@@ -183,17 +183,5 @@ INSERT INTO detalle_comprobante (servicio_servicio_id, comprobante_comprobante_i
 INSERT INTO detalle_servicios (fecha_solicitud, hora_solicitud, descripcion_solicitud, monto_servicio, transaccion_transaccion_id, servicio_servicio_id) VALUES
 ('2023-07-02', '10:00', 'Masaje', 50.00, 3, 5),
 ('2023-07-07', '17:00', 'Cena Gourmet', 75.00, 4, 6);
-
-
-
-
-
-
-
-
-
-
-
-
 
 
