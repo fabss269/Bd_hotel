@@ -36,6 +36,9 @@ CREATE TABLE cliente (
     pais_codigo_pais CHAR(3) NOT NULL,
     FOREIGN KEY (pais_codigo_pais) REFERENCES pais (codigo_pais)
 );
+ALTER TABLE cliente
+ADD CONSTRAINT chk_telefono
+CHECK (telefono ~ '^(?:\+\d{2})?\d{8,11}$');
 
 CREATE TABLE empleado (
     dni_empleado char(8) PRIMARY KEY,
