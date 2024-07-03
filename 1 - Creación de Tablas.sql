@@ -84,7 +84,7 @@ CREATE TABLE transaccion (
     transaccion_id           SERIAL PRIMARY KEY,
     fecha_registro           DATE default current_date,
     hora_registro            TIME default current_time,
-    tipo_transaccion         CHAR(1) set default 'C',
+    tipo_transaccion         CHAR(1) default 'C',
     habitacion_habitacion_id INTEGER NOT NULL,
     persona_id               INTEGER NOT NULL,
     fecha_salida             DATE,
@@ -114,7 +114,7 @@ CREATE TABLE comprobante (
     FOREIGN KEY (transaccion_transaccion_id) REFERENCES transaccion (transaccion_id),
     FOREIGN KEY (cliente_cliente_id) REFERENCES cliente (cliente_id),
     FOREIGN KEY (empleado_dni_empleado) REFERENCES empleado (dni_empleado),
-	CHECK(tipo_comprobonte in ('B','F','BE','FE'))
+	CHECK(tipo_comprobante in ('B','F','BE','FE'))
 );
 
 CREATE TABLE detalle_alojamiento (
