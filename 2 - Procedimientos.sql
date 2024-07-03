@@ -484,12 +484,12 @@ $$ LANGUAGE plpgsql;
 
 
 -- COMPROBANTE
-CREATE OR REPLACE FUNCTION pa_insert_comprobante(trans_id int, tipo_comp CHAR(1), num_comp VARCHAR(10), monto NUMERIC(10,2), cli_id int, dni_emp CHAR(8), cli_cli_id int) RETURNS int AS $$
+CREATE OR REPLACE FUNCTION pa_insert_comprobante(trans_id int, tipo_comp CHAR(1), num_comp VARCHAR(10), monto NUMERIC(10,2), dni_emp CHAR(8), cli_cli_id int) RETURNS int AS $$
 DECLARE
     retorno int;
 BEGIN
-    INSERT INTO comprobante (transaccion_transaccion_id, tipo_comprobante, numero_comprobante, monto_total, cliente_id, empleado_dni_empleado, cliente_cliente_id)
-    VALUES (trans_id, tipo_comp, num_comp, monto, cli_id, dni_emp, cli_cli_id)
+    INSERT INTO comprobante (transaccion_transaccion_id, tipo_comprobante, numero_comprobante, monto_total, empleado_dni_empleado, cliente_cliente_id)
+    VALUES (trans_id, tipo_comp, num_comp, monto, dni_emp, cli_cli_id)
     RETURNING comprobante_id INTO retorno;
     RETURN retorno;
 EXCEPTION WHEN OTHERS THEN
@@ -497,10 +497,10 @@ EXCEPTION WHEN OTHERS THEN
 END;
 $$ LANGUAGE plpgsql;
 --
-CREATE OR REPLACE FUNCTION pa_update_comprobante(comp_id int, trans_id int, tipo_comp CHAR(1), num_comp VARCHAR(10), monto NUMERIC(10,2), cli_id int, dni_emp CHAR(8), cli_cli_id int) RETURNS int AS $$
+CREATE OR REPLACE FUNCTION pa_update_comprobante(comp_id int, trans_id int, tipo_comp CHAR(1), num_comp VARCHAR(10), monto NUMERIC(10,2), dni_emp CHAR(8), cli_cli_id int) RETURNS int AS $$
 BEGIN
     UPDATE comprobante
-    SET transaccion_transaccion_id = trans_id, tipo_comprobante = tipo_comp, numero_comprobante = num_comp, monto_total = monto, cliente_id = cli_id, empleado_dni_empleado = dni_emp, cliente_cliente_id = cli_cli_id
+    SET transaccion_transaccion_id = trans_id, tipo_comprobante = tipo_comp, numero_comprobante = num_comp, monto_total = monto, empleado_dni_empleado = dni_emp, cliente_cliente_id = cli_cli_id
     WHERE comprobante_id = comp_id;
     RETURN comp_id;
 EXCEPTION WHEN OTHERS THEN
