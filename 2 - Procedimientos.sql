@@ -629,6 +629,138 @@ exception when others then
 end;
 $$ language plpgsql;
 
+-------------------PROCEDIMIENTOS ALMACENADOS PARA INSERTAR, ELIMINAR Y MODIFICAR PAÍS-------------------------------------------------------
+Create or replace function pa_insert_pais(cod_pais char(3), nom varchar(100)) returns int as
+$$
+Declare
+retorno int;
+Begin
+	INSERT INTO public.pais(
+	codigo_pais, nombre)
+	VALUES (cod_pais, nom)
+	returning codigo_pais into retorno;
+	return retorno;
+Exception when others then
+	return -1;
+end;
+$$ language 'plpgsql'
+
+-- Procedimiento para eliminar (fisicamente o logicamente): pa_delete_pais
+Create or replace function pa_delete_pais(pais_id char(3)) returns int as
+$$
+Declare
+retorno int;
+Begin
+	delete from pais where codigo_pais=pais_id;
+	return 0;
+Exception when others then
+	return -1;
+end;
+$$ language 'plpgsql'
+
+-- Procedimiento para modificar: pa_update_pais
+Create or replace function pa_update_pais(cod_pais char(3), nom varchar(100)) returns int as
+$$
+Declare
+Begin --Try
+UPDATE public.pais
+	SET nombre=nom
+	WHERE codigo_pais=cod_pais;
+ 	return 0; -- 0: Exito
+Exception when others then --Catch
+	return -1; -- -1: Violación de restricción
+end;
+$$ language 'plpgsql'
+
+-------------------PROCEDIMIENTOS ALMACENADOS PARA INSERTAR, ELIMINAR Y MODIFICAR CLIENTE-------------------------------------------------------
+Create or replace function pa_insert_cliente(dir varchar(255), tel varchar(14), doc_tipo varchar(20), num_doc varchar(20), 
+											 cod_pais char(3)) returns int as
+$$
+Declare
+retorno int;
+Begin
+	INSERT INTO public.cliente(direccion, telefono, tipo_doc, numero_documento, pais_codigo_pais)
+	VALUES (dir,tel,doc_tipo,num_doc,cod_pais)
+	returning cliente_id into retorno;
+	return retorno;
+Exception when others then
+	return -1;
+end;
+$$ language 'plpgsql'
+
+-- Procedimiento para eliminar (fisicamente o logicamente)
+Create or replace function pa_delete_cliente(id_cliente int) returns int as
+$$
+Declare
+retorno int;
+Begin
+	delete from cliente where cliente_id=id_cliente;
+	return 0;
+Exception when others then
+	return -1;
+end;
+$$ language 'plpgsql'
+
+-- Procedimiento para modificar
+Create or replace function pa_update_cliente(id_cliente int, dir varchar(255), tel varchar(14), doc_tipo varchar(20), num_doc varchar(20), 
+											 cod_pais char(3)) returns int as
+$$
+Declare
+Begin --Try
+UPDATE public.cliente
+	SET direccion=dir, telefono=tel, tipo_doc=doc_tipo, numero_documento=num_doc, pais_codigo_pais=cod_pais
+	WHERE cliente_id=id_cliente;
+ 	return 0; -- 0: Exito
+Exception when others then --Catch
+	return -1; -- -1: Violación de restricción
+end;
+$$ language 'plpgsql'
+
+-------------------PROCEDIMIENTOS ALMACENADOS PARA INSERTAR, ELIMINAR Y MODIFICAR EMPLEADO-------------------------------------------------------
+Create or replace function pa_insert_empleado(dni char(8), paterno varchar(100), materno varchar(100), nombre varchar(100), 
+											 sex char(1), tel varchar(14)) returns int as
+$$
+Declare
+retorno int;
+Begin
+	INSERT INTO public.empleado(
+	dni_empleado, apellido_pat, ape_materno, nombres, sexo, movil)
+	VALUES (dni, paterno, materno, nombre, sex, tel)
+	returning dni_empleado into retorno;
+	return retorno;
+Exception when others then
+	return -1;
+end;
+$$ language 'plpgsql'
+
+-- Procedimiento para eliminar (fisicamente o logicamente)
+Create or replace function pa_delete_empleado(dni char(8)) returns int as
+$$
+Declare
+retorno int;
+Begin
+	delete from empleado where dni_empleado=dni;
+	return 0;
+Exception when others then
+	return -1;
+end;
+$$ language 'plpgsql'
+
+-- Procedimiento para modifica
+Create or replace function pa_update_empleado(dni char(8), paterno varchar(100), materno varchar(100), nombre varchar(100), 
+											 sex char(1), tel varchar(14), baja date) returns int as
+$$
+Declare
+Begin --Try
+UPDATE public.empleado
+	SET apellido_pat=paterno, ape_materno=materno, nombres=nombre, sexo=sex, movil=tel,f_baja=baja
+	WHERE dni_empleado=dni;
+ 	return 0; -- 0: Exito
+Exception when others then --Catch
+	return -1; -- -1: Violación de restricción
+end;
+$$ language 'plpgsql'
+
 
 
 
