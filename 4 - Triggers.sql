@@ -87,3 +87,30 @@ END;
 $$ LANGUAGE plpgsql;
 
 -----------------------------------
+CREATE OR REPLACE FUNCTION fn_notificar_cambio_estado_habitacion() RETURNS trigger 
+AS 
+$$
+BEGIN
+    IF NEW.estado_habitacion IS DISTINCT FROM OLD.estado_habitacion THEN
+        PERFORM send_notification(
+            'Cambio de estado de habitación', 
+            'La habitación ' || NEW.habitacion_id || ' ha cambiado su estado a ' || NEW.estado_habitacion
+        );
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION send_notification(asunto TEXT, mensaje TEXT) RETURNS void AS 
+$$
+BEGIN
+ 
+    RAISE NOTICE 'Asunto: %, Mensaje: %', asunto, mensaje;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE TRIGGER tr_notificar_cambio_estado_habitacion
+AFTER UPDATE ON habitacion
+FOR EACH ROW 
+EXECUTE FUNCTION fn_notificar_cambio_estado_habitacion();
