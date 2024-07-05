@@ -762,7 +762,18 @@ end;
 $$ language 'plpgsql'
 
 
-
+CREATE OR REPLACE FUNCTION pa_insert_comprobante(trans_id int, tipo_comp CHAR(1), num_comp VARCHAR(10), monto NUMERIC(10,2), dni_emp CHAR(8), cli_cli_id int) RETURNS int AS $$
+DECLARE
+    retorno int;
+BEGIN
+    INSERT INTO comprobante (transaccion_transaccion_id, tipo_comprobante, numero_comprobante, monto_total, empleado_dni_empleado, cliente_cliente_id)
+    VALUES (trans_id, tipo_comp, num_comp, monto, dni_emp, cli_cli_id)
+    RETURNING comprobante_id INTO retorno;
+    RETURN retorno;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
 
 
 
