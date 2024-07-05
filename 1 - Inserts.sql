@@ -1,21 +1,3 @@
-
--- 11. Tabla transaccion
-INSERT INTO transaccion (tipo_transaccion, habitacion_habitacion_id, persona_id, fecha_entrada, hora_entrada, fecha_salida, hora_salida, empleado_dni_empleado, cliente_cliente_id, motivo_viaje_motivo_id) VALUES
-('1', 3, 6, '2023-07-01', '13:00', '2023-07-05', '11:00', '56789012', 3, 1),
-('2', 4, 5, '2023-07-06', '14:00', '2023-07-08', '10:00', '87651234', 4, 2);
-
-
--- 13. Tabla detalle_alojamiento
-INSERT INTO detalle_alojamiento (transaccion_transaccion_id, persona_cliente_id) VALUES
-(3, 6),
-(4, 5);
-
-
--- 15. Tabla detalle_servicios
-INSERT INTO detalle_servicios (fecha_solicitud, hora_solicitud, descripcion_solicitud, monto_servicio, transaccion_transaccion_id, servicio_servicio_id) VALUES
-('2023-07-02', '10:00', 'Masaje', 50.00, 3, 5),
-('2023-07-07', '17:00', 'Cena Gourmet', 75.00, 4, 6);
-
 -------------------------------------------------------------------------------------LOS REALES INSERTS------------------------------------------------------------------------------------------------
 --1.INSERT DE PAÍS
 INSERT INTO public.pais(codigo_pais, nombre) VALUES 
@@ -114,7 +96,7 @@ INSERT INTO habitacion (estado_habitacion, descripcion, categoria_habitacion_cat
 ('R', 'Habitación con dos camas individuales', 4),
 ('L', 'Habitación cerca del lobby', 5),
 ('D', 'Habitación con baño compartido', 5);
---Detalle_alojamiento, comprobante, detalle_comprobante se hacen con un trigger
+--comprobante, detalle_comprobante se hacen con un trigger
 --11. Tabla de transaccion
 INSERT INTO transaccion (habitacion_habitacion_id, empleado_dni_empleado, cliente_cliente_id, motivo_viaje_motivo_id) VALUES
 (1, 56789012, 1, 1),
@@ -128,3 +110,5 @@ INSERT INTO transaccion (habitacion_habitacion_id, empleado_dni_empleado, client
 (9, 56789012, 9, 4),
 (10, 78564972, 10, 5),
 (1, 72928142, 11, 1);
+---Falta detalle_alojamiento y detalle_servicios
+
