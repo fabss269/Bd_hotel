@@ -94,7 +94,6 @@ CREATE TABLE transaccion (
     cliente_cliente_id       INTEGER NOT NULL,
     motivo_viaje_motivo_id   INTEGER NOT NULL,
     FOREIGN KEY (habitacion_habitacion_id) REFERENCES habitacion (habitacion_id),
-    FOREIGN KEY (persona_id) REFERENCES persona (cliente_id),
     FOREIGN KEY (empleado_dni_empleado) REFERENCES empleado (dni_empleado),
     FOREIGN KEY (cliente_cliente_id) REFERENCES cliente (cliente_id),
     FOREIGN KEY (motivo_viaje_motivo_id) REFERENCES motivo_viaje (motivo_id)
