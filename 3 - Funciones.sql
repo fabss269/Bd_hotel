@@ -15,6 +15,9 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+
+
+
 -- Ingresos en un rango de fechas
 CREATE OR REPLACE FUNCTION generar_reporte_ingresos(
   fecha_inicio DATE, 
@@ -34,30 +37,63 @@ END;
 $$ 
 LANGUAGE plpgsql;
 
--- Cantidad de clientes registrados
-CREATE OR REPLACE FUNCTION contar_clientes_registrados()
+
+
+
+
+-- Contar habitaciones por estado
+CREATE OR REPLACE FUNCTION contar_habitaciones_por_estado(p_estado CHAR(1))
 RETURNS INTEGER
 AS $$
 DECLARE
-    total_clientes INTEGER;
+    total_habitaciones INTEGER;
 BEGIN
     SELECT COUNT(*)
-    INTO total_clientes
-    FROM cliente;
+    INTO total_habitaciones
+    FROM habitacion
+    WHERE estado_habitacion = p_estado;
 
-    RETURN total_clientes;
+    RETURN total_habitaciones;
 END;
 $$ LANGUAGE plpgsql;
 
 
 
+-- Total de ingresos por servicio
+CREATE OR REPLACE FUNCTION calcular_total_ingresos_servicio(p_servicio_id INTEGER)
+RETURNS NUMERIC
+AS $$
+DECLARE
+    total_ingresos NUMERIC;
+BEGIN
+    SELECT COALESCE(SUM(dc.monto), 0)
+    INTO total_ingresos
+    FROM detalle_comprobante dc
+    INNER JOIN comprobante c ON dc.comprobante_comprobante_id = c.comprobante_id
+    WHERE dc.servicio_servicio_id = p_servicio_id;
+
+    RETURN total_ingresos;
+END;
+$$ LANGUAGE plpgsql;
 
 
 
+-- Cantidad de transacciones por servicio
+CREATE OR REPLACE FUNCTION contar_transacciones_por_servicio(p_servicio_id INTEGER)
+RETURNS INTEGER
+AS $$
+DECLARE
+    total_transacciones INTEGER;
+BEGIN
+    SELECT COUNT(*)
+    INTO total_transacciones
+    FROM detalle_servicios ds
+    INNER JOIN transaccion t ON ds.transaccion_transaccion_id = t.transaccion_id
+    WHERE ds.servicio_servicio_id = p_servicio_id;
 
-
-
-
+    RETURN total_transacciones;
+END;
+$$ LANGUAGE plpgsql;
 
 
 
