@@ -1,4 +1,4 @@
-//LEONARDO
+
   --Vista de Información de Habitaciones Ocupadas:
 
 CREATE OR REPLACE VIEW v_habitaciones_ocupadas AS
@@ -164,4 +164,4 @@ GROUP BY
 ORDER BY
     mes;
 select * from v_detalle_comprobantes_mes
-//LEONARDO
+
