@@ -1,42 +1,21 @@
--- Calcular el costo total de una estancia
-CREATE OR REPLACE FUNCTION calcular_costo_total_estancia(
-  hab_id INTEGER, 
-  dias_estancia INTEGER, 
-  servicios JSON
-  ) 
-RETURNS NUMERIC AS $$
+-- Clientes pr pais
+CREATE OR REPLACE FUNCTION consultar_clientes_por_pais(p_codigo_pais CHAR(3))
+RETURNS INTEGER
+AS $$
 DECLARE
-    precio_habitacion NUMERIC;
-    precio_servicios NUMERIC := 0;
-    costo_total NUMERIC;
+    total_clientes INTEGER;
 BEGIN
-    -- Obtener el precio de la habitación
-    SELECT precio
-    INTO precio_habitacion
-    FROM habitacion
-    WHERE habitacion_id = hab_id;
+    SELECT COUNT(*)
+    INTO total_clientes
+    FROM cliente
+    WHERE pais_codigo_pais = p_codigo_pais;
 
-    -- Calcular el costo de los servicios adicionales
-    FOR serv IN SELECT * FROM json_each_text(servicios)
-    LOOP
-        SELECT precio_total
-        INTO precio_servicios
-        FROM servicio
-        WHERE servicio_id = serv.key::INTEGER;
-        precio_servicios := precio_servicios + precio_servicios * serv.value::INTEGER;
-    END LOOP;
-
-    -- Calcular el costo total
-    costo_total := (precio_habitacion * dias_estancia) + precio_servicios;
-
-    RETURN costo_total;
+    RETURN total_clientes;
 END;
-$$ 
-LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 
-
--- Generar reporte de ingresos en un rango de fechas
+-- Ingresos en un rango de fechas
 CREATE OR REPLACE FUNCTION generar_reporte_ingresos(
   fecha_inicio DATE, 
   fecha_fin DATE
@@ -45,7 +24,6 @@ RETURNS NUMERIC AS $$
 DECLARE
     ingresos NUMERIC;
 BEGIN
-    -- Calcular los ingresos totales en el rango de fechas
     SELECT SUM(monto_total)
     INTO ingresos
     FROM comprobante
@@ -56,8 +34,20 @@ END;
 $$ 
 LANGUAGE plpgsql;
 
+-- Cantidad de clientes registrados
+CREATE OR REPLACE FUNCTION contar_clientes_registrados()
+RETURNS INTEGER
+AS $$
+DECLARE
+    total_clientes INTEGER;
+BEGIN
+    SELECT COUNT(*)
+    INTO total_clientes
+    FROM cliente;
 
-
+    RETURN total_clientes;
+END;
+$$ LANGUAGE plpgsql;
 
 
 
