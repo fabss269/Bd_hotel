@@ -775,5 +775,19 @@ EXCEPTION WHEN OTHERS THEN
 END;
 $$ LANGUAGE plpgsql;
 
-
-
+------------VERIFICAR
+CREATE OR REPLACE FUNCTION pa_insert_transaccion(tipo_trans CHAR(1), hab_id int, per_id int, fecha_ent DATE, hora_ent TIME, fecha_sal DATE, hora_sal TIME, dni_emp CHAR(8), cli_id int, mot_id int) RETURNS int AS $$
+DECLARE
+    retorno int;
+BEGIN
+    if((select estado_habitacion from habitacion where habitacion_id=hab_id )!='O') then 
+        INSERT INTO transaccion (tipo_transaccion, habitacion_habitacion_id, persona_id, fecha_entrada, hora_entrada, fecha_salida, hora_salida, empleado_dni_empleado, cliente_cliente_id, motivo_viaje_motivo_id)
+        VALUES (tipo_trans, hab_id, per_id, fecha_ent, hora_ent, fecha_sal, hora_sal, dni_emp, cli_id, mot_id)
+        RETURNING transaccion_id INTO retorno;
+        RETURN retorno;
+    else
+        return 0;
+EXCEPTION WHEN OTHERS THEN
+    RETURN -1;
+END;
+$$ LANGUAGE plpgsql;
