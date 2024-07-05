@@ -52,23 +52,23 @@ INSERT INTO motivo_viaje (descripcion_motivo) VALUES
 ('Conferencia');
 --6. Tabla empleado
 INSERT INTO empleado(dni_empleado, apellido_pat, ape_materno, nombres, sexo, movil, f_alta, f_baja) VALUES 
-(56789012, 'Garcia', 'Fernandez', 'Carlos', 'M', '+51987654321', '2024-07-03', ''), 
+(56789012, 'Garcia', 'Fernandez', 'Carlos', 'M', '+51987654321', '2024-07-03', null), 
 (78564972, 'Garcia', 'Chinchay', 'Alan', 'M', '+51906300972', '2024-07-03', '2024-08-03'), 
-(72928142, 'Guzman', 'Alarcon', 'Gabo', 'M', '+51904300876', '2024-07-04', ''), 
-(74295872, 'Perez', 'Vasquez', 'Ander', 'M', '+51945678345', '2024-07-04', '');
+(72928142, 'Guzman', 'Alarcon', 'Gabo', 'M', '+51904300876', '2024-07-04', null), 
+(74295872, 'Perez', 'Vasquez', 'Ander', 'M', '+51945678345', '2024-07-04', null);
 --7. Tabla cliente
-INSERT INTO cliente(cliente_id, direccion, telefono, f_registro, tipo_doc, numero_documento, pais_codigo_pais) VALUES 
-(1, '789 Boulevard Principal', '+51888888888', '2024-07-03', 'DNI', '56789012C', 124), 
-(2, '101 Avenida del Sol', '+51777777777', '2024-07-03', 'Pasaporte', 'B1234567', 250), 
-(3, 'La niña 170', '906300962', '2024-07-03', 'DNI', '72428857', 056), 
-(4, 'Salas 128', '986709124', '2024-07-03', 'DNI', '73435567', 170), 
-(5, 'Gladiolos 236', '987654234', '2024-07-04', 'DNI', '97568765', 008), 
-(6, 'La florida 270', '+51923800962', '2024-07-04', 'DNI', '74446589', 300), 
-(7, 'Antonio Arenas 344', '+51964784235', '2024-07-04', 'DNI', '18647746', 604), 
-(8, 'Los Treboles 456', '+51965941533', '2024-07-04', 'DNI', '16628363', 058), 
-(9, 'Casa de Zumi', '+51968923459', '2024-07-04', 'DNI', '19645322', 170), 
-(10, 'Zarumilla 230', '+51907300976', '2024-07-04', 'DNI', '75624910', 170), 
-(11, 'Av Antenor Orrego 200', '+51945673246', '2024-07-04', 'DNI', '16648684', 170);
+INSERT INTO cliente(direccion, telefono, f_registro, tipo_doc, numero_documento, pais_codigo_pais) VALUES 
+('789 Boulevard Principal', '+51888888888', '2024-07-03', 'DNI', '56789012C', 124), 
+('101 Avenida del Sol', '+51777777777', '2024-07-03', 'Pasaporte', 'B1234567', 250), 
+('La niña 170', '906300962', '2024-07-03', 'DNI', '72428857', 056), 
+('Salas 128', '986709124', '2024-07-03', 'DNI', '73435567', 170), 
+('Gladiolos 236', '987654234', '2024-07-04', 'DNI', '97568765', 008), 
+('La florida 270', '+51923800962', '2024-07-04', 'DNI', '74446589', 300), 
+('Antonio Arenas 344', '+51964784235', '2024-07-04', 'DNI', '18647746', 604), 
+('Los Treboles 456', '+51965941533', '2024-07-04', 'DNI', '16628363', 058), 
+('Casa de Zumi', '+51968923459', '2024-07-04', 'DNI', '19645322', 170), 
+('Zarumilla 230', '+51907300976', '2024-07-04', 'DNI', '75624910', 170), 
+('Av Antenor Orrego 200', '+51945673246', '2024-07-04', 'DNI', '16648684', 170);
 --8. Tabla de persona
 INSERT INTO persona (cliente_id, ape_paterno, ape_materno, nombres, sexo) VALUES
 (5, 'Lopez', 'Gomez', 'Juan', 'M'),
