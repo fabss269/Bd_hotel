@@ -115,3 +115,16 @@ INSERT INTO habitacion (estado_habitacion, descripcion, categoria_habitacion_cat
 ('L', 'Habitación cerca del lobby', 5),
 ('D', 'Habitación con baño compartido', 5);
 --Detalle_alojamiento, comprobante, detalle_comprobante se hacen con un trigger
+--11. Tabla de transaccion
+INSERT INTO transaccion (habitacion_habitacion_id, empleado_dni_empleado, cliente_cliente_id, motivo_viaje_motivo_id) VALUES
+(1, 56789012, 1, 1),
+(2, 78564972, 2, 2),
+(3, 72928142, 3, 3),
+(4, 74295872, 4, 4),
+(5, 56789012, 9, 5),
+(6, 78564972, 6, 1),
+(7, 72928142, 7, 2),
+(8, 74295872, 8, 3),
+(9, 56789012, 9, 4),
+(10, 78564972, 10, 5),
+(1, 72928142, 11, 1);
