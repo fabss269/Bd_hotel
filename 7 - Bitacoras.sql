@@ -305,43 +305,43 @@ FOR EACH ROW EXECUTE FUNCTION fn_bitacora_transaccion();
 select * from bitacora_transaccion;
 
 ------------------------------------BITACORA_DETALLE_ALOJAMIENTO------------------------------------
-create table bitacora_detalle_alojamiento
-(
-    bitacora_da_id serial primary key,
-	--------------------------------------------------------
-    transaccion_transaccion_id int,
-    persona_cliente_id int,
-	--------------------------------------------------------------
-    f_actualizacion date,
-    h_actualizacion time,
-    usuario varchar(20),
-    maquina_ip inet,
-    operacion varchar(10)  -- in, de, ua, ud
-);
+-- create table bitacora_detalle_alojamiento
+-- (
+--     bitacora_da_id serial primary key,
+-- 	--------------------------------------------------------
+--     transaccion_transaccion_id int,
+--     persona_cliente_id int,
+-- 	--------------------------------------------------------------
+--     f_actualizacion date,
+--     h_actualizacion time,
+--     usuario varchar(20),
+--     maquina_ip inet,
+--     operacion varchar(10)  -- in, de, ua, ud
+-- );
 
-create or replace function fn_bitacora_detalle_alojamiento() returns trigger as
-$$
-declare
-begin
-    if tg_op = 'insert' then
-        insert into bitacora_detalle_alojamiento(transaccion_transaccion_id, persona_cliente_id, f_actualizacion, h_actualizacion, usuario, maquina_ip, operacion)
-        values (new.transaccion_transaccion_id, new.persona_cliente_id, current_date, current_time, current_user, inet_client_addr(), 'in');
-        return new;
-    elsif tg_op = 'delete' then
-        insert into bitacora_detalle_alojamiento(transaccion_transaccion_id, persona_cliente_id, f_actualizacion, h_actualizacion, usuario, maquina_ip, operacion)
-        values (old.transaccion_transaccion_id, old.persona_cliente_id, current_date, current_time, current_user, inet_client_addr(), 'de');
-        return old;
-    elsif tg_op = 'update' then
-        insert into bitacora_detalle_alojamiento(transaccion_transaccion_id, persona_cliente_id, f_actualizacion, h_actualizacion, usuario, maquina_ip, operacion)
-        values (new.transaccion_transaccion_id, new.persona_cliente_id, current_date, current_time, current_user, inet_client_addr(), 'ua');
+-- create or replace function fn_bitacora_detalle_alojamiento() returns trigger as
+-- $$
+-- declare
+-- begin
+--     if tg_op = 'insert' then
+--         insert into bitacora_detalle_alojamiento(transaccion_transaccion_id, persona_cliente_id, f_actualizacion, h_actualizacion, usuario, maquina_ip, operacion)
+--         values (new.transaccion_transaccion_id, new.persona_cliente_id, current_date, current_time, current_user, inet_client_addr(), 'in');
+--         return new;
+--     elsif tg_op = 'delete' then
+--         insert into bitacora_detalle_alojamiento(transaccion_transaccion_id, persona_cliente_id, f_actualizacion, h_actualizacion, usuario, maquina_ip, operacion)
+--         values (old.transaccion_transaccion_id, old.persona_cliente_id, current_date, current_time, current_user, inet_client_addr(), 'de');
+--         return old;
+--     elsif tg_op = 'update' then
+--         insert into bitacora_detalle_alojamiento(transaccion_transaccion_id, persona_cliente_id, f_actualizacion, h_actualizacion, usuario, maquina_ip, operacion)
+--         values (new.transaccion_transaccion_id, new.persona_cliente_id, current_date, current_time, current_user, inet_client_addr(), 'ua');
         
-        insert into bitacora_detalle_alojamiento(transaccion_transaccion_id, persona_cliente_id, f_actualizacion, h_actualizacion, usuario, maquina_ip, operacion)
-        values (old.transaccion_transaccion_id, old.persona_cliente_id, current_date, current_time, current_user, inet_client_addr(), 'ud');
-        return new;
-    end if;
-end;
-$$ language 'plpgsql';
+--         insert into bitacora_detalle_alojamiento(transaccion_transaccion_id, persona_cliente_id, f_actualizacion, h_actualizacion, usuario, maquina_ip, operacion)
+--         values (old.transaccion_transaccion_id, old.persona_cliente_id, current_date, current_time, current_user, inet_client_addr(), 'ud');
+--         return new;
+--     end if;
+-- end;
+-- $$ language 'plpgsql';
 
-create or replace trigger tr_fn_bitacora_detalle_alojamiento
-after insert or delete or update on detalle_alojamiento
-for each row execute function fn_bitacora_detalle_alojamiento();
+-- create or replace trigger tr_fn_bitacora_detalle_alojamiento
+-- after insert or delete or update on detalle_alojamiento
+-- for each row execute function fn_bitacora_detalle_alojamiento();
