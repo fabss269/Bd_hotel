@@ -246,7 +246,6 @@ CREATE TABLE BITACORA_TRANSACCION
     hora_registro            time,
     tipo_transaccion         char(1),
     habitacion_habitacion_id int,
-    persona_id               int,
     fecha_entrada            date,
     hora_entrada             time,
     fecha_salida             date,
@@ -267,33 +266,33 @@ DECLARE
 BEGIN
     IF TG_OP = 'INSERT' THEN
         INSERT INTO BITACORA_TRANSACCION(transaccion_id, fecha_registro, hora_registro, tipo_transaccion, habitacion_habitacion_id, 
-                                         persona_id, fecha_entrada, hora_entrada, fecha_salida, hora_salida, empleado_dni_empleado, 
+                                         fecha_entrada, hora_entrada, fecha_salida, hora_salida, empleado_dni_empleado, 
                                          cliente_cliente_id, motivo_viaje_motivo_id, f_actualizacion, h_actualizacion, usuario, maquina_ip, operacion)
         VALUES (NEW.transaccion_id, NEW.fecha_registro, NEW.hora_registro, NEW.tipo_transaccion, NEW.habitacion_habitacion_id, 
-                NEW.persona_id, NEW.fecha_entrada, NEW.hora_entrada, NEW.fecha_salida, NEW.hora_salida, NEW.empleado_dni_empleado, 
+                NEW.fecha_entrada, NEW.hora_entrada, NEW.fecha_salida, NEW.hora_salida, NEW.empleado_dni_empleado, 
                 NEW.cliente_cliente_id, NEW.motivo_viaje_motivo_id, current_date, current_time, current_user, inet_client_addr(), 'IN');
         RETURN NEW;
     ELSIF TG_OP = 'DELETE' THEN
         INSERT INTO BITACORA_TRANSACCION(transaccion_id, fecha_registro, hora_registro, tipo_transaccion, habitacion_habitacion_id, 
-                                         persona_id, fecha_entrada, hora_entrada, fecha_salida, hora_salida, empleado_dni_empleado, 
+                                       fecha_entrada, hora_entrada, fecha_salida, hora_salida, empleado_dni_empleado, 
                                          cliente_cliente_id, motivo_viaje_motivo_id, f_actualizacion, h_actualizacion, usuario, maquina_ip, operacion)
         VALUES (OLD.transaccion_id, OLD.fecha_registro, OLD.hora_registro, OLD.tipo_transaccion, OLD.habitacion_habitacion_id, 
-                OLD.persona_id, OLD.fecha_entrada, OLD.hora_entrada, OLD.fecha_salida, OLD.hora_salida, OLD.empleado_dni_empleado, 
+                 OLD.fecha_entrada, OLD.hora_entrada, OLD.fecha_salida, OLD.hora_salida, OLD.empleado_dni_empleado, 
                 OLD.cliente_cliente_id, OLD.motivo_viaje_motivo_id, current_date, current_time, current_user, inet_client_addr(), 'DE');
         RETURN OLD;
     ELSIF TG_OP = 'UPDATE' THEN
         INSERT INTO BITACORA_TRANSACCION(transaccion_id, fecha_registro, hora_registro, tipo_transaccion, habitacion_habitacion_id, 
-                                         persona_id, fecha_entrada, hora_entrada, fecha_salida, hora_salida, empleado_dni_empleado, 
+                                          fecha_entrada, hora_entrada, fecha_salida, hora_salida, empleado_dni_empleado, 
                                          cliente_cliente_id, motivo_viaje_motivo_id, f_actualizacion, h_actualizacion, usuario, maquina_ip, operacion)
         VALUES (NEW.transaccion_id, NEW.fecha_registro, NEW.hora_registro, NEW.tipo_transaccion, NEW.habitacion_habitacion_id, 
-                NEW.persona_id, NEW.fecha_entrada, NEW.hora_entrada, NEW.fecha_salida, NEW.hora_salida, NEW.empleado_dni_empleado, 
+                 NEW.fecha_entrada, NEW.hora_entrada, NEW.fecha_salida, NEW.hora_salida, NEW.empleado_dni_empleado, 
                 NEW.cliente_cliente_id, NEW.motivo_viaje_motivo_id, current_date, current_time, current_user, inet_client_addr(), 'UA');
         
         INSERT INTO BITACORA_TRANSACCION(transaccion_id, fecha_registro, hora_registro, tipo_transaccion, habitacion_habitacion_id, 
                                          persona_id, fecha_entrada, hora_entrada, fecha_salida, hora_salida, empleado_dni_empleado, 
                                          cliente_cliente_id, motivo_viaje_motivo_id, f_actualizacion, h_actualizacion, usuario, maquina_ip, operacion)
         VALUES (OLD.transaccion_id, OLD.fecha_registro, OLD.hora_registro, OLD.tipo_transaccion, OLD.habitacion_habitacion_id, 
-                OLD.persona_id, OLD.fecha_entrada, OLD.hora_entrada, OLD.fecha_salida, OLD.hora_salida, OLD.empleado_dni_empleado, 
+                 OLD.fecha_entrada, OLD.hora_entrada, OLD.fecha_salida, OLD.hora_salida, OLD.empleado_dni_empleado, 
                 OLD.cliente_cliente_id, OLD.motivo_viaje_motivo_id, current_date, current_time, current_user, inet_client_addr(), 'UD');
         RETURN NEW;
     END IF;
@@ -303,16 +302,6 @@ $$ LANGUAGE 'plpgsql';
 CREATE OR REPLACE TRIGGER tr_fn_bitacora_transaccion AFTER INSERT OR DELETE OR UPDATE ON transaccion 
 FOR EACH ROW EXECUTE FUNCTION fn_bitacora_transaccion();
 
-select * from transaccion;
-select* from habitacion;
-select * from categoria_habitacion;
-select * from servicio;
-select * from comprobante;
-select * from cliente;
-
-INSERT INTO transaccion(tipo_transaccion, habitacion_habitacion_id, persona_id, empleado_dni_empleado, 
-							   cliente_cliente_id, motivo_viaje_motivo_id)
-	VALUES (1, 2, 2, '12345678', 2, 3);
 select * from bitacora_transaccion;
 
 ------------------------------------BITACORA_DETALLE_ALOJAMIENTO------------------------------------
