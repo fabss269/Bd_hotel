@@ -90,7 +90,7 @@ CREATE TABLE BITACORA_COMPROBANTE
 	comprobante_id             int,
     transaccion_transaccion_id INTEGER NOT NULL,
     tipo_comprobante           char(2) not null, --'B','F','BE','FE'
-    numero_comprobante         char(10) unique not null,
+    numero_comprobante         char(10) not null,
     fecha_comprobante          DATE,
     hora_comprobante           TIME,
     monto_total                numeric(10,2),
