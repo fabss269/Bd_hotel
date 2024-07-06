@@ -1,13 +1,21 @@
 -----------ESTE ES PARA HACER TODO LO QUE TENGA QUE VER CON DINERO, DETALLES, COMPROBANTE TRANSACCIÓN--------------------
-CREATE or replace FUNCTION fn_actualizar_costo_total_y_tablas() RETURNS trigger 
+CREATE OR REPLACE FUNCTION fn_actualizar_costo_total_y_tablas()
+RETURNS trigger 
 AS 
 $$
 DECLARE
-    dias_estancia INTEGER;
+    dias_estancia INT;
     costo_total NUMERIC(10, 2);
     p_categoria NUMERIC(10, 2);
-	consolidado numeric(10, 2);
-	nuevo_comprobante int;
+    consolidado NUMERIC(10, 2);
+    nuevo_comprobante INT;
+    parte1 TEXT;
+    parte2 TEXT;
+    secuencia INT;
+    num_comprobante TEXT;
+	tipo_doc varchar(20);
+	det_serv_id int;
+
 BEGIN
     -- Verificar si los valores de hora_salida y fecha_salida han cambiado
     IF NEW.hora_salida IS DISTINCT FROM OLD.hora_salida OR NEW.fecha_salida IS DISTINCT FROM OLD.fecha_salida THEN
@@ -23,23 +31,48 @@ BEGIN
             FROM habitacion 
             WHERE habitacion_id = NEW.habitacion_habitacion_id
         );
-		
-		-- CAMBIAR EL ESTADO DE LA HABITACION A DISPONIBLE
-		UPDATE habitacion set estado_habitacion = 'D' where habitacion_id = new.habitacion_habitacion_id;
+        
+        -- Cambiar el estado de la habitación a disponible
+        UPDATE habitacion 
+        SET estado_habitacion = 'D' 
+        WHERE habitacion_id = NEW.habitacion_habitacion_id;
       
         -- Calcular el costo total
         costo_total := dias_estancia * p_categoria;
-		-------------insert en detalle
-		INSERT INTO detalle_servicios(fecha_solicitud, hora_solicitud, descripcion_solicitud, 
-									 monto_servicio, transaccion_transaccion_id, servicio_servicio_id)
-		VALUES (new.fecha_salida, new.hora_salida, 'Se va mikin', costo_total, new.transaccion_id, 1);
-	
-		consolidado = fn_obtener_consolidado(new.transaccion_id);
+        
+        -- Insertar en detalle_servicios
+		select pa_insert_detalle_servicios('Acabó su hospedaje', costo_total, new.transaccion_id, 3) into det_serv_id;
+    
+        -- Obtener el consolidado
+        consolidado := fn_obtener_consolidado(NEW.transaccion_id);
+
 		
-		select pa_insert_comprobante(new.transaccion_id, 'B', '0000004', consolidado, new.empleado_dni_empleado, 
-							  new.cliente_cliente_id) INTO nuevo_comprobante;
-	
-		IF nuevo_comprobante != -1 THEN
+        -- Generar número de comprobante usando la secuencia
+        SELECT COUNT(*) 
+        INTO secuencia 
+        FROM comprobante;
+
+        secuencia := secuencia + 1;
+        parte1 := LPAD((secuencia / 100000)::TEXT, 4, '0');
+        parte2 := LPAD((secuencia % 100000)::TEXT, 5, '0');
+        num_comprobante := parte1 || '-' || parte2;
+        
+        -- Insertar el comprobante
+		
+		SELECT cl.tipo_doc into tipo_doc
+		FROM transaccion tr
+		JOIN cliente cl ON tr.cliente_cliente_id = cl.cliente_id
+		where new.cliente_cliente_id = cl.cliente_id;
+		
+        if tipo_doc != 'RUC' THEN
+		SELECT pa_insert_comprobante(NEW.transaccion_id, 'B', num_comprobante, consolidado, NEW.empleado_dni_empleado, 
+                                     NEW.cliente_cliente_id) INTO nuevo_comprobante;
+		else
+		SELECT pa_insert_comprobante(NEW.transaccion_id, 'F', num_comprobante, consolidado, NEW.empleado_dni_empleado, 
+                                     NEW.cliente_cliente_id) INTO nuevo_comprobante;
+		end if;
+
+        IF nuevo_comprobante != -1 THEN
             -- Insertar en detalle_comprobante
             INSERT INTO detalle_comprobante (comprobante_comprobante_id, servicio_servicio_id, monto)
             SELECT nuevo_comprobante, ds.servicio_servicio_id, SUM(ds.monto_servicio)
@@ -51,10 +84,23 @@ BEGIN
     END IF;
     RETURN NEW;
 END;
-$$ language 'plpgsql';
+$$ LANGUAGE 'plpgsql';
 
 Create or replace trigger tr_fn_actualizar_costo_total_y_tablas after update on transaccion
 	for each row execute procedure fn_actualizar_costo_total_y_tablas();
+---------------------------------------PARA UPDATEAR LA SALIDA MÁS RÁPIDO-----------------------------
+CREATE OR REPLACE FUNCTION pa_update_salida_transaccion(trans_id int) RETURNS int AS $$
+BEGIN
+    UPDATE transaccion
+    SET fecha_salida = current_date,
+        hora_salida = current_time
+    WHERE transaccion_id = trans_id;
+    RETURN trans_id;
+EXCEPTION WHEN OTHERS THEN
+    RAISE NOTICE 'Error updating transaccion: %', SQLERRM;
+    RETURN -1;
+END;
+$$ LANGUAGE 'plpgsql';
 
 ---------------------------------------FUNCION_PARA CONSOLIDADO------------------------------
 CREATE OR REPLACE FUNCTION fn_obtener_consolidado(transaccion_id INTEGER)
