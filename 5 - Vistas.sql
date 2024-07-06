@@ -24,27 +24,6 @@ WHERE
 
 select * from v_habitaciones_ocupadas
 
---Vista de Resumen de Transacciones:
-CREATE VIEW v_resumen_transacciones AS
-SELECT
-    tr.transaccion_id,
-    tr.fecha_registro,
-    tr.tipo_transaccion,
-    h.descripcion AS descripcion_habitacion,
-    p.nombres AS nombre_cliente,
-    e.nombres AS nombre_empleado,
-    c.tipo_comprobante,
-    c.numero_comprobante,
-    c.fecha_comprobante,
-    c.monto_total
-FROM
-    transaccion tr
-    JOIN habitacion h ON tr.habitacion_habitacion_id = h.habitacion_id
-    JOIN persona p ON tr.persona_id = p.cliente_id
-    JOIN empleado e ON tr.empleado_dni_empleado = e.dni_empleado
-    JOIN comprobante c ON tr.transaccion_id = c.transaccion_transaccion_id;
-
-select * from v_resumen_transacciones
 
 --Vista de Detalles de Servicios Solicitados:
 CREATE VIEW v_detalles_servicios AS
